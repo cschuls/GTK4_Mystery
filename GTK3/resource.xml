@@ -1,0 +1,5 @@
+<gresources>
+	<gresource prefix="ProgressBar">
+		<file preprocess="xml-stripblanks">ProgressBar.glade</file>
+	</gresource>
+</gresources>
