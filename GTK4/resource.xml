@@ -1,0 +1,5 @@
+<gresources>
+	<gresource prefix="Prog">
+		<file preprocess="xml-stripblanks">progressbar.ui</file>
+	</gresource>
+</gresources>
