@@ -14,6 +14,10 @@ progress bars.  When I added a bit of temporary code to associate a progress bar
 override to the display, the override did work but affected both progress bars
 in a global manner. I could not individualize the CSS overrides.
 
+Strangely, I could apply a CSS override to a label widget and to the text of a
+button widget in my GTK4 version of the program.  For some reason, the progress
+bar widgets would not react to the individual cSS overrides.
+
 Both the GTK3 version and GTK4 versions of the sample application will be
 uploaded if anyone wants to test out this scenrio.
 
