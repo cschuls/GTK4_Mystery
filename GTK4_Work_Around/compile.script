@@ -1,0 +1,7 @@
+#!/bin/bash
+
+glib-compile-resources --target=ProgResource.c --generate-source resource.xml
+
+gcc -Wno-format -o progressbar main.c ProgResource.c `pkg-config --cflags gtk4` `pkg-config --libs gtk4`
+
+rm ProgResource.c
