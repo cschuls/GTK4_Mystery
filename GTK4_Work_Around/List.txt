@@ -1,0 +1,4 @@
+This set of files contain a workaround for the apparent quirk in how GTK4 only seems to allow CSS customization
+for certain widgets at the display level.  The "progressbar.ui" was revised to include and "id" property which
+makes each progress bar widget unique.  Then the "main.c" program was revised to have the singular CSS provider
+definition include all of the needed style information for both progress bar widgets.  
