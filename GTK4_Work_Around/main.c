@@ -32,7 +32,8 @@ static void do_progress (GtkWidget *widget, gpointer data)
 static void activate (GtkApplication* app, gpointer user_data)
 {
     GtkBuilder      *builder;
-    GtkCssProvider  *provider;
+    GtkCssProvider  *provider1;
+    GtkCssProvider  *provider2;
     GtkStyleContext *context;
     GtkWindow       *window;
     GtkButton       *button1;
@@ -51,7 +52,9 @@ static void activate (GtkApplication* app, gpointer user_data)
     button1      = GTK_BUTTON(gtk_builder_get_object (builder, "button1"));
     progressbar1 = GTK_PROGRESS_BAR(gtk_builder_get_object (builder, "progressbar1"));
     progressbar2 = GTK_PROGRESS_BAR(gtk_builder_get_object (builder, "progressbar2"));
-    provider     = gtk_css_provider_new();
+    provider1    = gtk_css_provider_new();
+    provider2    = gtk_css_provider_new();
+
     display      = gtk_widget_get_display (GTK_WIDGET (window));
 
     gtk_window_set_application (window, app);
@@ -61,14 +64,24 @@ static void activate (GtkApplication* app, gpointer user_data)
 
     g_signal_connect (button1, "clicked", G_CALLBACK (do_progress), NULL);
 
-    /* Set up CSS customizations at the display level */
+    /* Set up CSS customizations at the widget level */
 
-    gtk_css_provider_load_from_data(provider, "#prog1 trough { background-image: none; background-color: #ffffff; min-height: 10px; border-radius: 0px; box-shadow: none;} \
-        #prog1 trough progress { background-image: none; background-color: #b3a472; min-height: 10px; border-radius: 0px; box-shadow: none;} \
-        #prog2 trough { background-image: none; background-color: #ffffff; min-height: 10px; border-radius: 0px; box-shadow: none;} \
-        #prog2 trough progress { background-image: none; background-color: #92b372; min-height: 10px; border-radius: 0px; box-shadow: none;} ", -1);
+    gtk_css_provider_load_from_data(provider1, "#prog1 trough { background-image: none; background-color: #ffffff; min-height: 10px; border-radius: 0px; box-shadow: none;} \
+     #prog1 progress { background-image: none; background-color: #b3a472; min-height: 10px; border-radius: 0px; box-shadow: none;}", -1);
+    gtk_css_provider_load_from_data(provider2, "#prog2 trough { background-image: none; background-color: #ffffff; min-height: 10px; border-radius: 0px; box-shadow: none;} \
+     #prog2 progress { background-image: none; background-color: #92b372; min-height: 10px; border-radius: 0px; box-shadow: none;}", -1);
 
-    gtk_style_context_add_provider_for_display (display, GTK_STYLE_PROVIDER (provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+    // For some reason, adding the CSS providers to each widget's context does not appear to work for progress bars.
+    // So, the CSS provider information will be added to the display instead.
+
+    //context = gtk_widget_get_style_context(GTK_WIDGET(progressbar1));
+    //gtk_style_context_add_provider (context, GTK_STYLE_PROVIDER(provider1), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+    //context = gtk_widget_get_style_context(GTK_WIDGET(progressbar2));
+    //gtk_style_context_add_provider (context, GTK_STYLE_PROVIDER(provider2), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+    gtk_style_context_add_provider_for_display (display, GTK_STYLE_PROVIDER(provider1), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    gtk_style_context_add_provider_for_display (display, GTK_STYLE_PROVIDER(provider2), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR(progressbar1), (gdouble) 0.00);
     gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR(progressbar2), (gdouble) 0.00);
